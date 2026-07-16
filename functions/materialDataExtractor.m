@@ -1,4 +1,4 @@
-function [names, rho, E, nu, yield_strength, cost] = material_data_extractor(materials)
+function [names, rho, E, nu, yieldStrength, cost] = materialDataExtractor(materials)
 % MATERIAL_DATA_EXTRACTOR Extracts material properties from a struct array
 %
 % Inputs:
@@ -24,22 +24,22 @@ end
 
 
 
-material_size = numel(materials);
+nMaterials = numel(materials);
 
-names = strings(material_size, 1);
-rho = zeros(material_size, 1);
-E = zeros(material_size, 1);
-nu = zeros(material_size, 1);
-yield_strength = zeros(material_size, 1);
-cost = zeros(material_size, 1);
+names = strings(nMaterials, 1);
+rho = zeros(nMaterials, 1);
+E = zeros(nMaterials, 1);
+nu = zeros(nMaterials, 1);
+yieldStrength = zeros(nMaterials, 1);
+cost = zeros(nMaterials, 1);
 
-for idx = 1:material_size
+for idx = 1:nMaterials
     item = materials(idx);
     names(idx) = string(item.name);
     rho(idx) = item.rho_kg_m3;
     E(idx) = item.E_Pa;
     nu(idx) = item.nu;
-    yield_strength(idx) = item.yieldStrength_Pa;
+    yieldStrength(idx) = item.yieldStrength_Pa;
     cost(idx) = item.cost_USD_per_m;
 
 
