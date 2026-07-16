@@ -1,5 +1,5 @@
 function [names, rho, E, nu, yieldStrength, cost] = materialDataExtractor(materials)
-% MATERIAL_DATA_EXTRACTOR Extracts material properties from a struct array
+% MATERIALDATAEXTRACTOR Extracts material properties from a struct array
 %
 % Inputs:
 %   materials - struct with array fields
