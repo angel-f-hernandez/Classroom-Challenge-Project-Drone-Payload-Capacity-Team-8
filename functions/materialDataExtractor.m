@@ -14,7 +14,7 @@ function [names, rho, E, nu, yieldStrength, cost] = materialDataExtractor(materi
 %   rho             - density array
 %   E               - Young's modulus array
 %   nu              - Poissons array
-%   yield_strength  - Yield strength array
+%   yieldStrength  - Yield strength array
 %   cost            - cost array
 
 arguments
