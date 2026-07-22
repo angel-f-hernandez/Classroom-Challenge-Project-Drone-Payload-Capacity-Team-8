@@ -1,6 +1,6 @@
 function [armMass, maxPayload, armVolume] = armAnalysis(design, dims, density, params)
 
-% --- Arm volume [m^3] based on design geometry ---
+% Arm volume [m^3] based on design geometry
 switch design
     case "oval"
         armVolume = ovalVolume(dims);
@@ -8,10 +8,10 @@ switch design
         armVolume = trussVolume(dims);
 end
 
-% --- Arm mass [kg] ---
+% [Arm mass [kg]
 armMass = armVolume * density;
 
-% --- Max payload [kg] from the thrust-to-weight constraint ---
+%   Max payload [kg] from the thrust-to-weight constraint
 %   T/W >= TWmin  ==>  totalDroneMass <= maxTotalThrust_kg / TWmin
 %   totalDroneMass = baseMass + nArms*armMass + payload
 %   => maxPayload  = maxTotalThrust_kg/TWmin - baseMass - nArms*armMass
