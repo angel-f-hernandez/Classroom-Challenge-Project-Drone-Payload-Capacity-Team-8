@@ -1,3 +1,19 @@
+% INPUTS:
+% design:  "oval" or "truss"
+% dims:    struct of dimensions
+%          oval: L = length, W = width, H = height, t = thickness
+%          truss: L = length, H = height, d = member dimension, nBays = number of bays
+% density: density of material
+% params:  struct of shared drone constants (from Task 1)
+%          baseMass = drone mass excluding arms and payload [kg]
+%          nArms = number of arms
+%          maxTotalThrust_kg = total thrust from all motors [kgf]
+%          TWmin = minimum thrust-to-weight ratio
+% OUTPUTS:
+% armMass: mass of one arm [kg]
+% maxPayload: max payload at the T/W limit [kg]
+% armVolume: volume of one arm [m^3]
+
 function [armMass, maxPayload, armVolume] = armAnalysis(design, dims, density, params)
 
 % Arm volume [m^3] based on design geometry
@@ -18,6 +34,7 @@ armMass = armVolume * density;
 allowableTotalMass = params.maxTotalThrust_kg / params.TWmin;
 maxPayload = allowableTotalMass - params.baseMass - params.nArms * armMass;
 end
+
 
 function V = ovalVolume(dims)
 %OVALVOLUME  Hollow elliptical (oval) tube. dims in MM. Returns V in m^3.
