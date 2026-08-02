@@ -1,11 +1,14 @@
-function [results] = droneArmFEA(filePath, designName, materialNames, youngsModulus, poissonsRatio, density, yieldStrength)
+function [results] = droneArmFEA(filePaths, areas, fixedFaces, loadedFaces, designNames, materialNames, youngsModulus, poissonsRatio, density, yieldStrength)
 % droneArmFEA: performs FEA for each of the materials provided on a
 % specified drone arm and outputs the results as a struct which stores the
 % name of the material and the StaticStructuralResults objects of the test.
 % 
 % INPUTS:
 %   filePath:      a string containing the file path to the STL/STEP file
-%   designNameL:   a string containing the name of the design
+%   areas:         stores the areas of the different designs
+%   fixedFaces     stores the id of the fixed face of each design
+%   loadedFaces    stores the id of the loaded face of each design
+%   designNames:   contains the strings of the different design names
 %   materialNames: a string array containing the names of the materials   
 %   youngsModulus: a double array containing the Young's Modulus of each
 %                  material, in Pa
@@ -21,8 +24,11 @@ function [results] = droneArmFEA(filePath, designName, materialNames, youngsModu
 %                  corresponding StaticStructuralResults object
 
 arguments
-    filePath (1, 1) string
-    designName (1, 1) string
+    filePaths string
+    areas (:, 1) double
+    fixedFaces (:, 1) cell
+    loadedFaces (:, 1) cell
+    designNames (:,1) string
     materialNames (:, 1) string
     youngsModulus (:, 1) double
     poissonsRatio (:, 1) double
@@ -30,39 +36,27 @@ arguments
     yieldStrength (:, 1) double
 end
 
-% Gets the total number of properties
+% Gets the total number of properties + designs
 nMaterialNames = numel(materialNames);
+nDesigns = numel(filePaths);
 
 % Checks to ensure all provided material properties are of the same size
-if numel(youngsModulus) ~= nMaterialNames || numel(poissonsRatio) ~= nMaterialNames || numel(density) ~= nMaterialNames  || numel(yieldStrength) ~= nMaterialNames
-    error("Material input arrays must all have the same length.")
+if numel(designNames) ~= nDesigns || ...
+        numel(areas) ~= nDesigns || ...
+        numel(fixedFaces) ~= nDesigns || ...
+        numel(loadedFaces) ~= nDesigns
+
+    error("Each design must have one name, area, fixed-face entry, and loaded-face entry.")
 end
 
 % Define gravity
 
 g = 9.81;   % m/s^2
 
-% Creates the temporary FEmodel and creates a graph with the faces displayed
-model = femodel("AnalysisType","structuralStatic", "Geometry", filePath);
-tempMesh = generateMesh(model);
-pdegplot(tempMesh, FaceAlpha=0.5, FaceLabels="on");
-
-% Collects user input on which faces are fixed, which faces have loads, and
-% the surface area of the selected item
-fixedFacesID = input("Which faces are fixed? ");
-loadedFaceID = input("What face is loaded? ");
-faceArea = input("What is the area of the the loaded face? ");
-
-% Calculate load on object in Newtons
-motorThrustN = 1 * g;        % Newtons
-motorWeightN = 0.065 * g;    % Newtons
-
-
-% Convert load into surface traction (N/m^2)
-netMotorTraction = (motorThrustN - motorWeightN) / faceArea; % N/m^2
-
 % Preallocate storage for material names and solution objects
-results(nMaterialNames, 1) = struct( ...
+
+nResults = nDesigns * nMaterialNames;
+results(nResults, 1) = struct( ...
     "DesignName" , "",...
     "MaterialName", "", ...
     "Solution", [], ...
@@ -70,40 +64,59 @@ results(nMaterialNames, 1) = struct( ...
     "MaximumVonMisesStress", [], ...
     "FOS", []);
 
-% Model for FEA is generated
-model = femodel("AnalysisType","structuralStatic", "Geometry", filePath);
+% Calculate load on object in Newtons
+motorThrustN = 1 * g;        % Newtons
+motorWeightN = 0.065 * g;    % Newtons
 
-% Loop that iterates over each material
-for idx = 1:nMaterialNames
+% Create figure window
+figure;
+tiledlayout(1, nDesigns);
 
-    % Material properties are loaded into the model
-    model.MaterialProperties.YoungsModulus = youngsModulus(idx);
-    model.MaterialProperties.PoissonsRatio = poissonsRatio(idx);
-    model.MaterialProperties.MassDensity = density(idx);
-
-    % Boundary conditions/applied loads are configured on the model
-    model.FaceLoad(loadedFaceID) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
-    model.FaceBC(fixedFacesID) = faceBC(Constraint='fixed');
-    model.CellLoad = cellLoad(Gravity=[0, 0, -g]);
+for idxDesign = 1 : nDesigns
+    % loads the fixed, loaded, and face area to memory
+    fixedFacesID = fixedFaces{idxDesign};
+    loadedFaceID = loadedFaces{idxDesign};
+    faceArea = areas(idxDesign);
     
-    % Generate the mesh and run the simulation
-    model = generateMesh(model);
-    R = solve(model);
+    % Convert load into surface traction (N/m^2)
+    netMotorTraction = (motorThrustN - motorWeightN) / faceArea; % N/m^2
     
-    % Find maximum stress, displacement, and also calculate FOS
-    maxDisplacement = max(R.Displacement.Magnitude);
-    maxStress = max(R.VonMisesStress);
-    FOS = yieldStrength(idx) ./ maxStress;
+    % Model for FEA is generated
+    model = femodel("AnalysisType","structuralStatic", "Geometry", filePaths(idxDesign));
+    
+    % Loop that iterates over each material
+    for idxMaterials = 1:nMaterialNames
 
-    % Store the results in a struct for later access
-    results(idx).DesignName = designName;
-    results(idx).MaterialName = materialNames(idx);
-    results(idx).Solution = R;
-    results(idx).MaximumDisplacement = maxDisplacement;
-    results(idx).MaximumVonMisesStress = maxStress;
-    results(idx).FOS = FOS;
-
-
+        resultIndex = (idxDesign - 1) * nMaterialNames + idxMaterials;
+    
+        % Material properties are loaded into the model
+        model.MaterialProperties.YoungsModulus = youngsModulus(idxMaterials);
+        model.MaterialProperties.PoissonsRatio = poissonsRatio(idxMaterials);
+        model.MaterialProperties.MassDensity = density(idxMaterials);
+    
+        % Boundary conditions/applied loads are configured on the model
+        model.FaceLoad(loadedFaceID) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
+        model.FaceBC(fixedFacesID) = faceBC(Constraint='fixed');
+        model.CellLoad = cellLoad(Gravity=[0, 0, -g]);
+        
+        % Generate the mesh and run the simulation
+        model = generateMesh(model);
+        R = solve(model);
+        
+        % Find maximum stress, displacement, and also calculate FOS
+        maxDisplacement = max(R.Displacement.Magnitude);
+        maxStress = max(R.VonMisesStress);
+        FOS = yieldStrength(idxMaterials) ./ maxStress;
+    
+        % Store the results in a struct for later access
+        results(resultIndex).DesignName = designNames(idxDesign);
+        results(resultIndex).MaterialName = materialNames(idxMaterials);
+        results(resultIndex).Solution = R;
+        results(resultIndex).MaximumDisplacement = maxDisplacement;
+        results(resultIndex).MaximumVonMisesStress = maxStress;
+        results(resultIndex).FOS = FOS;
+    
+    
+    end
 end
-
 end
