@@ -20,27 +20,35 @@ for idx = 1:nResults
 
     nexttile
     pdeplot3D(solution.Mesh, ...
-        ColorMapData=solution.Displacement.ux, ...
+        ColorMapData=solution.Displacement.ux * 1000, ...
         Deformation=solution.Displacement)
-    title("x-Displacement (m)")
+    title("x-Displacement")
+    cb = colorbar;
+    cb.Label.String = "Displacement (mm)";
     
     nexttile
     pdeplot3D(solution.Mesh, ...
-        ColorMapData=solution.Displacement.uy, ...
+        ColorMapData=solution.Displacement.uy * 1000, ...
         Deformation=solution.Displacement)
-    title("y-Displacement (m)")
+    title("y-Displacement")
+    cb = colorbar;
+    cb.Label.String = "Displacement (mm)";
     
     nexttile
     pdeplot3D(solution.Mesh, ...
-        ColorMapData=solution.Displacement.uz, ...
+        ColorMapData=solution.Displacement.uz* 1000, ...
         Deformation=solution.Displacement)
-    title("z-Displacement (m)")
+    title("z-Displacement ")
+    cb = colorbar;
+    cb.Label.String = "Displacement (mm)";
 
     nexttile
     pdeplot3D(solution.Mesh, ...
-        ColorMapData=solution.VonMisesStress, ...
+        ColorMapData=solution.VonMisesStress / 1e6, ...
         Deformation=solution.Displacement)
-    title("Von Mises Stress (Pa)")
+    title("Von Mises Stress")
+    cb = colorbar;
+    cb.Label.String = "Stress (MPa)";
 end
 
 end
