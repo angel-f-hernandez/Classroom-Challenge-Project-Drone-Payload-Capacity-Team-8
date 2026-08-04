@@ -7,6 +7,10 @@ Please add the following items:
 # Project Details
 Briefly describe your team's approach to the project and how you implemented your solution.
 
+In this project, a drone arm was designed and analyzed by calculating the maximum stress of the arm using the given factor of safety, and conducting Finite Element Analysis. In designing the arm, our team first brainstormed simple shapes that could be used. After those shapes were sketched, and their area, volume and density equations were inputed into a MATLAB code, dimensions were approximated before they were sketched and completed in a CAD software. This allowed us to pick dimensions for each arm that would set it below our factor of safety for stress in the arm. Finite element analysis would be completed after the shapes were sketched and design in a CAD software. The two shapes that our team decided to use in this project are a hollow, oval shaped arm, and a truss inspired arm. 
+
+After completed a MATLAB code to run a stress analysis and finite element analysis on each arm design, the two were compared to determine which design best met the requirements, and fell below the given factor of safety. Some of the factors that were considered when determining which design had the best results included which one had a better margin of error in terms of the given factor of safety. The finite element analysis was also used to determine which arm design had less strain and deformation. These results can be seen in the graph and data below.
+
 # Project Solution Instructions
 Please explain step-by-step how to setup and run your project solution. Include any information about resources or external tools that might be needed to run your MATLAB code and/or Simulink model without errors.
 
