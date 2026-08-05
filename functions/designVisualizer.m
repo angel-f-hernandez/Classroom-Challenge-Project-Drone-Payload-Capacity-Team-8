@@ -16,6 +16,6 @@ for designIdx = 1:nPaths
 
     model = femodel("Geometry", filePaths(designIdx));
     model = generateMesh(model);
-    pdegplot(model,"FaceAlpha",0.5,"FaceLabels","on")
+    pdegplot(model,"FaceAlpha",0.2,"FaceLabels","on")
     title(filePaths(designIdx), "Interpreter", "none")
 end

@@ -68,22 +68,28 @@ results(nResults, 1) = struct( ...
 motorThrustN = 1 * g;        % Newtons
 motorWeightN = 0.065 * g;    % Newtons
 
-% Create figure window
-figure;
-tiledlayout(1, nDesigns);
 
 for idxDesign = 1 : nDesigns
     % loads the fixed, loaded, and face area to memory
     fixedFacesID = fixedFaces{idxDesign};
     loadedFaceID = loadedFaces{idxDesign};
-    faceArea = areas(idxDesign);
+    faceArea = areas(idxDesign) * numel(loadedFaceID);
     
     % Convert load into surface traction (N/m^2)
     netMotorTraction = (motorThrustN - motorWeightN) / faceArea; % N/m^2
     
     % Model for FEA is generated
     model = femodel("AnalysisType","structuralStatic", "Geometry", filePaths(idxDesign));
+
+    % Generate the mesh and run the simulation
+    model = generateMesh(model);
+
     
+    % Boundary conditions/applied loads are configured on the model
+    model.FaceLoad(loadedFaceID) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
+    model.FaceBC(fixedFacesID) = faceBC(Constraint='fixed');
+    model.CellLoad = cellLoad(Gravity=[0, 0, -g]);
+
     % Loop that iterates over each material
     for idxMaterials = 1:nMaterialNames
 
@@ -93,16 +99,10 @@ for idxDesign = 1 : nDesigns
         model.MaterialProperties.YoungsModulus = youngsModulus(idxMaterials);
         model.MaterialProperties.PoissonsRatio = poissonsRatio(idxMaterials);
         model.MaterialProperties.MassDensity = density(idxMaterials);
-    
-        % Boundary conditions/applied loads are configured on the model
-        model.FaceLoad(loadedFaceID) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
-        model.FaceBC(fixedFacesID) = faceBC(Constraint='fixed');
-        model.CellLoad = cellLoad(Gravity=[0, 0, -g]);
         
-        % Generate the mesh and run the simulation
-        model = generateMesh(model);
+        % Solve the model
         R = solve(model);
-        
+
         % Find maximum stress, displacement, and also calculate FOS
         maxDisplacement = max(R.Displacement.Magnitude);
         maxStress = max(R.VonMisesStress);
