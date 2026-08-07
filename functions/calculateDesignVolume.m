@@ -4,6 +4,8 @@ function [volumes] = calculateDesignVolume(filePaths)
 %total volume of the object.
 %   Inputs: 
 %       filePaths:  contains an array with the file path for each design
+%   Outputs:
+%       volumes: outputs the volumes of each design in m^3
 arguments
     filePaths string
 

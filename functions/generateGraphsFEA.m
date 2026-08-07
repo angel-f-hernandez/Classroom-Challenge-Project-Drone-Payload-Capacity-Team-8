@@ -1,5 +1,9 @@
 function [] = generateGraphsFEA(results)
-%GENERATEGRAPHSFEA 
+%GENERATEGRAPHSFEA generates x- displacement, y- displacement, z-
+%displacement and Von Mises Stress from the results generated in
+%droneArmFEA.m
+% Inputs:
+%   results: struct containing FEA simulation result data
 
 arguments
     results (:,1) struct
@@ -8,16 +12,19 @@ end
 nResults = numel(results);
 
 for idx = 1:nResults
+    % Allocating variables
     designName = results(idx).DesignName;
     materialName = results(idx).MaterialName;
     solution = results(idx).Solution;
     
+    % Creates tiled figure
     figureName = compose("%s - %s Results", designName, materialName);
     figure("Name", figureName)
     
     tiledlayout(2, 2)
     sgtitle(figureName)
-
+    
+    % Generates x-, y-, z- displacement and Von Mises stress graphs   
     nexttile
     pdeplot3D(solution.Mesh, ...
         ColorMapData=solution.Displacement.ux * 1000, ...

@@ -14,7 +14,7 @@ function [names, rho, E, nu, yieldStrength, cost] = materialDataExtractor(materi
 %   rho             - density array
 %   E               - Young's modulus array
 %   nu              - Poissons array
-%   yieldStrength  - Yield strength array
+%   yieldStrength   - Yield strength array
 %   cost            - cost array
 
 arguments
@@ -25,7 +25,7 @@ end
 
 
 nMaterials = numel(materials);
-
+% Preallocates variables
 names = strings(nMaterials, 1);
 rho = zeros(nMaterials, 1);
 E = zeros(nMaterials, 1);
@@ -33,6 +33,7 @@ nu = zeros(nMaterials, 1);
 yieldStrength = zeros(nMaterials, 1);
 cost = zeros(nMaterials, 1);
 
+% Extracts data from provided struct
 for idx = 1:nMaterials
     item = materials(idx);
     names(idx) = string(item.name);
