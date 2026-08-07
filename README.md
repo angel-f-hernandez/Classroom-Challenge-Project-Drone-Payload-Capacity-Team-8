@@ -26,7 +26,6 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 * supports a payload of at least 0.5 kg,
 * maintains a thrust-to-weight ratio of at least 2:1, and
 * has a factor of safety of at least 1.5.
-
 # Results
 
 ![Final table of results (task 4)](images/results.png)
