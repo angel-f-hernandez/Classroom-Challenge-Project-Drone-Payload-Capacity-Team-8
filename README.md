@@ -2,8 +2,11 @@
 
 # Team
 Ray Cillo (UCLA) - Project Manager, Quality Assurance
+
 Angel Hernandez (Cal Poly SLO) - Documentation, Visualization & FEA Lead
+
 Aadesh Bamane (SDSU) - Modeling Lead
+
 Angelina Mikhaiel (SDSU) - Analysis/Validation Lead
 
 # Project Details
