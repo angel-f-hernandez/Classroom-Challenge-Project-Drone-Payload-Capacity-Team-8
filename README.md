@@ -1,5 +1,11 @@
 # Solution to Classroom Challenge Project Drone Payload Capacity and Structural Design Analysis
 
+# Team
+Ray Cillo (UCLA) - Project Manager, Quality Assurance
+Angel Hernandez (Cal Poly SLO) - Documentation, Visualization & FEA Lead
+Aadesh Bamane (SDSU) - Modeling Lead
+Angelina Mikhaiel (SDSU) - Analysis/Validation Lead
+
 # Project Details
 In this project, a drone arm was designed and analyzed by calculating the maximum stress of the arm, performing a thrust-to-weight analysis to determine payload capacity, and conducting Finite Element Analysis. In designing the arm, our team first brainstormed simple shapes that could be used. After those shapes were sketched, their area, volume, and density equations were inputted into a MATLAB code, and dimensions were approximated before they were sketched and completed in a CAD software. This allowed us to pick dimensions for each arm that would keep it above our minimum factor of safety of 1.5 while still meeting the 0.5 kg minimum payload and 2:1 thrust-to-weight requirements. Finite element analysis would be completed after the shapes were sketched and designed in a CAD software. The two shapes that our team decided to use in this project are a hollow, oval shaped arm, and a truss inspired arm.
 
