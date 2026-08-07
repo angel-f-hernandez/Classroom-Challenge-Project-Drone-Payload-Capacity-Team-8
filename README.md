@@ -28,7 +28,7 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 * has a factor of safety of at least 1.5.
 # Results
 
-![Final table of results (task 4)](images/results.png)
+![Final table of results (task 4)](images/FEA_Results_Table.png)
 
 ![FEA of truss (Carbon fiber)](images/trussFEA.png)
 
