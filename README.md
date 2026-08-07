@@ -16,7 +16,7 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 In order to run this solution, please follow these steps:
 * Requires MATLAB R2023b or later with the Partial Differential Equation Toolbox
 1. Load the .stl or .step files into the /cad folder
-2. Open the DroneDesign_StudentProjectTemplate.mlx file and modify the filePaths variable with the the file paths of the uploaded designs
+2. Open the live_scripts/DroneDesign_StudentProjectTemplate.mlx file and modify the filePaths variable with the file paths of the uploaded designs
 3. Update the designNames variable to accurately reflect the name of the design uploaded
 4. Update the areas array with the surface area of the face(s) that are going to be loaded. This value comes from your choice of CAD software
 5. Run Task 1, Task 3, and the first part of Task 4 in order to generate a visual of the drone arm designs
