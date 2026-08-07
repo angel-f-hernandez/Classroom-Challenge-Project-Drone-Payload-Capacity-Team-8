@@ -86,8 +86,12 @@ for idxDesign = 1 : nDesigns
 
     
     % Boundary conditions/applied loads are configured on the model
-    model.FaceLoad(loadedFaceID) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
-    model.FaceBC(fixedFacesID) = faceBC(Constraint='fixed');
+    for f = loadedFaceID
+       model.FaceLoad(f) = faceLoad(SurfaceTraction = [0; 0; netMotorTraction]);
+    end
+    for f = fixedFacesID
+       model.FaceBC(f) = faceBC(Constraint='fixed');
+    end
     model.CellLoad = cellLoad(Gravity=[0, 0, -g]);
 
     % Loop that iterates over each material
