@@ -15,7 +15,7 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 2. Open `DroneDesign_StudentProjectTemplate.mlx` in MATLAB.
 3. Update the `filePaths` string array so that it contains the relative path to each CAD file.
 4. Update the `designNames` string array so that each design name corresponds to the CAD file in the same array position.
-5. Update the `areas` array using units of square meters. In the current implementation, each value represents the surface area of one loaded face. The code assumes that all loaded faces selected for a design have equal areas.
+5. Update the `areas` array using units of square meters. In the current implementation, each value represents the surface area of one loaded face. The code assumes that all loaded faces selected for a design have equal areas, and the function multiplies this value by the number of selected loaded faces..
 6. Run Task 1 to load the material properties and initialize the project parameters.
 7. Run Task 3 to calculate the volume, arm mass, and maximum payload for each design and material combination.
 8. Run the first portion of Task 4 containing `designVisualizer(filePaths)`. Use the displayed face labels to identify the attachment and load surfaces on each model.
@@ -27,12 +27,20 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 * maintains a thrust-to-weight ratio of at least 2:1, and
 * has a factor of safety of at least 1.5.
 # Results
-
+## Summary of Payload and FEA Results
 ![Final table of results (task 4)](images/FEA_Results_Table.png)
 
+## Carbon Fiber Composite Planar Truss: Displacement and Von Mises Stress
 ![FEA of truss (Carbon fiber)](images/trussFEA.png)
 
+## Carbon Fiber Composite Hollow Oval Arm: Displacement and Von Mises Stress
 ![FEA of hollow oval (Carbon fiber)](images/ovalFEA.png)
 
+
+# Final Recommendation
+
+The recommended design is the planar truss arm made from carbon fiber composite. This combination supports a maximum payload of 0.8973 kg while limiting maximum displacement to approximately 0.0224 mm and maintaining a factor of safety above the required minimum of 1.5.
+
+Although several lower-density materials provided slightly higher maximum payload capacities, they also experienced greater displacement. The carbon fiber truss therefore provided the best overall balance between payload capacity, stiffness, mass efficiency, and structural safety.
 # Contact
 raynittacillo@gmail.com
