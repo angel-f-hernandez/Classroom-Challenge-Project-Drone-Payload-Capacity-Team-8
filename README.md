@@ -5,7 +5,7 @@ In this project, a drone arm was designed and analyzed by calculating the maximu
 
 Our first set of dimensions came from the approximate MATLAB calculations, but the finite element analysis showed that those designs did not hold up. The oval arm deformed more than we wanted, and the truss arm fell below the minimum factor of safety for half of the material options, mostly because of stress concentrations at the joints and mounting holes that our simpler equations could not account for. We revised both designs with thicker walls and wider truss members, which fixed both problems but added mass and reduced how much payload the drone could carry.
 
-After completing a MATLAB code to run a stress analysis and finite element analysis on each arm design, the two were compared to determine which design best met the requirements and stayed above the minimum factor of safety. Some of the factors that were considered when determining which design had the best results included which one had a better margin above the required factor of safety, and which one had the higher maximum payload capacity. The finite element analysis was also used to determine which arm design had less strain and deformation. These results can be seen in the graph and data below.
+After completing a MATLAB code to run a stress analysis and finite element analysis on each arm design, the two were compared to determine which design best met the requirements and stayed above the minimum factor of safety. Some of the factors that were considered when determining which design had the best results included which one had a better margin above the required factor of safety, and which one had the higher maximum payload capacity. The finite element analysis was also used to determine which arm design had less stress and displacement. These results can be seen in the graph and data below.
 
 # Project Solution Instructions
 
@@ -15,7 +15,7 @@ After completing a MATLAB code to run a stress analysis and finite element analy
 2. Open `DroneDesign_StudentProjectTemplate.mlx` in MATLAB.
 3. Update the `filePaths` string array so that it contains the relative path to each CAD file.
 4. Update the `designNames` string array so that each design name corresponds to the CAD file in the same array position.
-5. Update the `areas` array using units of square meters. In the current implementation, each value represents the surface area of one loaded face. The code assumes that all loaded faces selected for a design have equal areas, and the function multiplies this value by the number of selected loaded faces..
+5. Update the `areas` array using units of square meters. In the current implementation, each value represents the surface area of one loaded face. The code assumes that all loaded faces selected for a design have equal areas, and the function multiplies this value by the number of selected loaded faces.
 6. Run Task 1 to load the material properties and initialize the project parameters.
 7. Run Task 3 to calculate the volume, arm mass, and maximum payload for each design and material combination.
 8. Run the first portion of Task 4 containing `designVisualizer(filePaths)`. Use the displayed face labels to identify the attachment and load surfaces on each model.
